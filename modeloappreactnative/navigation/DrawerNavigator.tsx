@@ -4,6 +4,8 @@ import React from 'react';
 import CustomDrawerContent from '../components/CustomDrawerContent';
 import HomeScreen from './screens/HomeScreen';
 import CinemasScreen, { Cinema } from './screens/CinemasScreen';
+import CreateCinemaScreen from './screens/CreateCinemaScreen';
+import EditCinemaScreen from './screens/EditCinemaScreen';
 
 
 export type DrawerParamList = {
@@ -43,6 +45,16 @@ const DrawerNavigator = () => {
           drawerIcon: ({ color, size }) => <Ionicons name="settings-outline" size={size} color={color} />,
           title: 'Cinemas',
         }}
+      />
+      <Drawer.Screen
+        name="CreateCinema"
+        component={CreateCinemaScreen}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Criar Cinema' }}
+      />
+      <Drawer.Screen
+        name="EditCinema"
+        component={EditCinemaScreen}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Cinema' }}
       />
     </Drawer.Navigator>  
   );
