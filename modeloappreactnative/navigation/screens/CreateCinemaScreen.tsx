@@ -50,11 +50,13 @@ const CreateCinemaScreen = ({ navigation }: Props) => {
         style={[styles.input, { height: 100 }]}
         multiline
       />
+      <Text style={styles.label}>Horário de Abertura</Text>
       <TextInput
         value={horario_de_abertura}
         onChangeText={setHorarioAbertura}
         style={styles.input}
       />
+      <Text style={styles.label}>Horário de Fechamento</Text>
       <TextInput
         value={horario_de_fechamento}
         onChangeText={setHorarioFechamento}

@@ -4,52 +4,53 @@ import { useFocusEffect } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { DrawerParamList } from '../DrawerNavigator';
+import { Cinema } from './CinemasScreen';
 
-type Props = DrawerScreenProps<DrawerParamList, 'Cinemas'>;
+type Props = DrawerScreenProps<DrawerParamList, 'Salas'>;
 
-export type Cinema = {
+export type Sala = {
   id: number;
-  nome: string;
-  endereco: string;
-  horario_de_abertura: string;
-  horario_de_fechamento : string;
+  lotacao_maxima: number;
+  assentos_normais: number;
+  assentos_acessiveis: number;
+  cinema : number;
 };
 
-const CinemasScreen = ({ navigation }: Props) => {
+const SalasScreen = ({ navigation }: Props) => {
 
-  const [cinemas, setCinemas] = useState<Cinema[]>([]);
+  const [salas, setSalas] = useState<Sala[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchCinemas = async () => {
+  const fetchSalas = async () => {
     setLoading(true);
-    const response = await fetch('http://localhost:8000/cinemas/');
+    const response = await fetch('http://localhost:8000/salas/');
     const data = await response.json();
-    setCinemas(data);
+    setSalas(data);
     setLoading(false);
   };
 
   useFocusEffect(
     useCallback(() => {
-      fetchCinemas();
+      fetchSalas();
     }, [])
   );
 
   const handleDelete = async (id: number) => {
-    const res = await fetch(`http://localhost:8000/cinemas/${id}/`, {
+    const res = await fetch(`http://localhost:8000/salas/${id}/`, {
       method: 'DELETE',
     });
-    setCinemas(prev => prev.filter(c => c.id !== id));
+    setSalas(prev => prev.filter(c => c.id !== id));
   };
 
-  const renderItem = ({ item }: { item: Cinema }) => (
+  const renderItem = ({ item }: { item: Sala }) => (
     <View style={styles.card}>
-      <Text style={styles.nome}>{item.nome}</Text>
-      <Text style={styles.endereco}>{item.endereco}</Text>
-      <Text style={styles.horario_de_abertura}>Horário de Abertura: {item.horario_de_abertura}</Text>
-      <Text style={styles.horario_de_fechamento}>Horário de Fechamento: {item.horario_de_fechamento}</Text>
+        <Text style={styles.lotacao_maxima}>Lotação Máxima: {item.lotacao_maxima}</Text>
+        <Text style={styles.assentos_normais}>Assentos Normais: {item.assentos_normais}</Text>
+        <Text style={styles.assentos_acessiveis}>Assentos Acessíveis: {item.assentos_acessiveis}</Text>
+        <Text style={styles.cinema}>Cinema (ID): {item.cinema}</Text>
       <TouchableOpacity
         style={styles.editButton}
-        onPress={() => navigation.navigate('EditCinema', { cinema: item })}
+        onPress={() => navigation.navigate('EditSala', { sala: item })}
       >
       <Text style={styles.editText}>Editar</Text>
       </TouchableOpacity>
@@ -64,12 +65,12 @@ const CinemasScreen = ({ navigation }: Props) => {
 
   return ( 
     <View style={styles.container}>
-      <Text style={styles.title}>Cinemas</Text>
+      <Text style={styles.title}>Salas</Text>
       {loading ? (
         <ActivityIndicator size="large" color="#4B7BE5" />
       ) : (
         <FlatList
-          data={cinemas}
+          data={salas}
           keyExtractor={(item) => item.id.toString()}
           renderItem={renderItem}
           contentContainerStyle={{ paddingBottom: 20 }}
@@ -77,7 +78,7 @@ const CinemasScreen = ({ navigation }: Props) => {
       )}
       <TouchableOpacity
       style={styles.fab}
-      onPress={() => navigation.navigate('CreateCinema')}
+      onPress={() => navigation.navigate('CreateSala')}
     >
       <Ionicons name="add" size={28} color="#fff"  />
     </TouchableOpacity>
@@ -110,23 +111,22 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
   },
-  nome: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#222',
-  },
-  endereco: {
-    fontSize: 15,
-    fontStyle: 'italic',
-    color: '#252525ff',
-    marginTop: 4,
-  },
-  horario_de_abertura: {
+  cinema: {
     fontSize: 14,
     color: '#666',
     marginTop: 4,
   },
-  horario_de_fechamento: {
+  lotacao_maxima: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 4,
+  },
+  assentos_normais: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 4,
+  },
+  assentos_acessiveis: {
     fontSize: 14,
     color: '#666',
     marginTop: 4,
@@ -163,4 +163,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CinemasScreen;
+export default SalasScreen;

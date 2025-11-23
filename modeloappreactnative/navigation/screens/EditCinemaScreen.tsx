@@ -42,18 +42,20 @@ const EditCinemaScreen = ({ route, navigation }: Props) => {
         onChangeText={setNome}
         style={styles.input}
       />
-      <Text style={styles.label}>Descrição</Text>
+      <Text style={styles.label}>Endereço</Text>
       <TextInput
         value={endereco}
         onChangeText={setEndereco}
         style={[styles.input, { height: 100 }]}
         multiline
       />
+      <Text style={styles.label}>Horário de Abertura</Text>
       <TextInput
         value={horario_de_abertura}
         onChangeText={setHorarioAbertura}
         style={styles.input}
       />
+      <Text style={styles.label}>Horário de Fechamento</Text>
       <TextInput
         value={horario_de_fechamento}
         onChangeText={setHorarioFechamento}
